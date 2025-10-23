@@ -1,0 +1,46 @@
+name: Build Windows EXE
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyinstaller kivy kivymd pillow requests yt_dlp mutagen
+
+    - name: Build EXE
+      run: |
+        pyinstaller --onefile --windowed --log-level=WARN ^
+          --hidden-import=kivy ^
+          --hidden-import=kivy.uix ^
+          --hidden-import=kivy.uix.label ^
+          --hidden-import=kivy.uix.button ^
+          --hidden-import=kivymd ^
+          --hidden-import=kivymd.uix ^
+          --hidden-import=pkg_resources.py2_warn ^
+          --hidden-import=requests ^
+          --hidden-import=yt_dlp ^
+          --hidden-import=mutagen ^
+          --hidden-import=PIL ^
+          workingdesktopappdownloader.py
+
+    - name: Upload EXE
+      uses: actions/upload-artifact@v3
+      with:
+        name: Auric-v1-Windows-EXE
+        path: dist/WorkingDesktopAppDownloader.exe
