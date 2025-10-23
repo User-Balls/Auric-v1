@@ -10,10 +10,10 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - name: Checkout repo
+    - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Set up Python
+    - name: Set up Python 3.11
       uses: actions/setup-python@v4
       with:
         python-version: '3.11'
@@ -25,22 +25,10 @@ jobs:
 
     - name: Build EXE
       run: |
-        pyinstaller --onefile --windowed --log-level=WARN ^
-          --hidden-import=kivy ^
-          --hidden-import=kivy.uix ^
-          --hidden-import=kivy.uix.label ^
-          --hidden-import=kivy.uix.button ^
-          --hidden-import=kivymd ^
-          --hidden-import=kivymd.uix ^
-          --hidden-import=pkg_resources.py2_warn ^
-          --hidden-import=requests ^
-          --hidden-import=yt_dlp ^
-          --hidden-import=mutagen ^
-          --hidden-import=PIL ^
-          workingdesktopappdownloader.py
+        pyinstaller --onefile --windowed --log-level=WARN --name Auric-v1 --hidden-import=kivy --hidden-import=kivy.uix --hidden-import=kivy.uix.label --hidden-import=kivy.uix.button --hidden-import=kivymd --hidden-import=kivymd.uix --hidden-import=pkg_resources.py2_warn --hidden-import=requests --hidden-import=yt_dlp --hidden-import=mutagen --hidden-import=PIL workingdesktopappdownloader.py
 
     - name: Upload EXE
       uses: actions/upload-artifact@v4
       with:
         name: Auric-v1-Windows-EXE
-        path: dist/WorkingDesktopAppDownloader.exe
+        path: dist/Auric-v1.exe
